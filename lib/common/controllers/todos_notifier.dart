@@ -13,7 +13,6 @@ class TodosNotifier extends ChangeNotifier {
     loading = true;
     final data = await DBHelper.getItems();
     todos = data.map((e) => TodoTrial.fromJson(e)).toList();
-    notifyListeners();
   }
 
   void sortTodosByCreatedAt() {

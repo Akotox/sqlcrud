@@ -128,10 +128,12 @@ class TodoListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(todosProvider).refresh();
+    final listData = ref.read(todosProvider).todos;
     return ListView.builder(
-        itemCount: ref.watch(todosProvider).todos.length,
+        itemCount: listData.length,
         itemBuilder: (context, index) {
-          final data = ref.watch(todosProvider).todos[index];
+          final data = listData[index];
           dynamic color = ref.read(todosProvider).getRandomColor();
           return TodoTile(
             title: data.title,
