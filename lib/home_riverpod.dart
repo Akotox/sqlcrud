@@ -33,10 +33,10 @@ class _HomeRiverPodState extends State<HomeRiverPod> {
     );
   }
 
-  _showForm(int? id, List<TodoTrial> _todos, TextEditingController title,
+  _showForm(int? id, List<TodoTrial> todos, TextEditingController title,
       TextEditingController desc) async {
     if (id != null) {
-      final existingTodo = _todos.firstWhere((element) => element.id == id);
+      final existingTodo = todos.firstWhere((element) => element.id == id);
       title.text = existingTodo.title.toString();
       desc.text = existingTodo.desc.toString();
     }
@@ -128,19 +128,17 @@ class TodoListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todosNotifier = ref.read(todosProvider);
-    todosNotifier.refresh();
     return ListView.builder(
-        itemCount: todosNotifier.todos.length,
+        itemCount: ref.watch(todosProvider).todos.length,
         itemBuilder: (context, index) {
-          final data = todosNotifier.todos[index];
-          dynamic color = todosNotifier.getRandomColor();
+          final data = ref.watch(todosProvider).todos[index];
+          dynamic color = ref.read(todosProvider).getRandomColor();
           return TodoTile(
             title: data.title,
             color: color,
             description: data.desc,
             update: update,
-            delete: () => todosNotifier.deleteTodos(data.id??0),
+            delete: () => ref.watch(todosProvider).deleteTodos(data.id ?? 0),
             child: Switch(
               value: false,
               onChanged: (value) {
